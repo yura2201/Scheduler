@@ -77,16 +77,25 @@ public class SchedulerImpl implements Scheduler, Runnable {
     @Override
     public void stopInternalScheduler() throws InterruptedException {
         if (isInternalSchedulerStarted) {
-            srv.awaitTermination(delay * pbQueue.size(), TimeUnit.MILLISECONDS);
-            srv.shutdown();
-            if (!srv.awaitTermination(delay * pbQueue.size(), TimeUnit.MILLISECONDS)) {
-                final List<Runnable> terminated = srv.shutdownNow();
+            try {
+                srv.awaitTermination(delay * pbQueue.size(), TimeUnit.MILLISECONDS);
+                srv.shutdown();
+                if (!srv.awaitTermination(delay * pbQueue.size(), TimeUnit.MILLISECONDS)) {
+                    final List<Runnable> terminated = srv.shutdownNow();
+                    Logger.getLogger(SchedulerImpl.class.getName()).log(
+                            Level.SEVERE, "Terminated processes count: {0}", terminated.size()
+                    );
+                }
+                stop = true;
+                isInternalSchedulerStarted = false;
+            } catch (InterruptedException ex) {
                 Logger.getLogger(SchedulerImpl.class.getName()).log(
-                        Level.SEVERE, "Terminated processes count: {0}", terminated.size()
+                        Level.SEVERE, "Interrupted by user: {0}", getStackTraceStr(ex)
                 );
+                stop = true;
+                isInternalSchedulerStarted = false;
+                throw ex;
             }
-            stop = true;
-            isInternalSchedulerStarted = false;
         }
     }
 
