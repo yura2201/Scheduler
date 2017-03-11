@@ -67,6 +67,7 @@ public class SchedulerImpl implements Scheduler, Runnable {
                                 Level.SEVERE, "Interrupted by user: {0}", getStackTraceStr(ex)
                         );
                         stop = true;
+                        isInternalSchedulerStarted = false;
                     }
                 }
             }, 0, delay, TimeUnit.MILLISECONDS
