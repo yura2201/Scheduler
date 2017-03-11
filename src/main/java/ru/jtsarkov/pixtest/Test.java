@@ -18,7 +18,7 @@ public class Test {
 //можно запускать как внешний сервис
 //        ScheduledExecutorService srv = Executors.newSingleThreadScheduledExecutor();
         //также можно запустить внутренний Executor
-        SchedulerImpl sch = new SchedulerImpl(true);
+        Scheduler sch = new SchedulerImpl(true);
         sch.put(itm);
         sch.put(itm2);
         sch.put(itm3);

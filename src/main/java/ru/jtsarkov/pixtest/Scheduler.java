@@ -7,4 +7,6 @@ package ru.jtsarkov.pixtest;
 public interface Scheduler {
 
     void put(TaskItem item);
+
+    void stopInternalScheduler() throws InterruptedException;
 }

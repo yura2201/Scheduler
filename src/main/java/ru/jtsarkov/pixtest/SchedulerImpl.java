@@ -74,6 +74,7 @@ public class SchedulerImpl implements Scheduler, Runnable {
         }
     }
 
+    @Override
     public void stopInternalScheduler() throws InterruptedException {
         if (isInternalSchedulerStarted) {
             srv.awaitTermination(delay * pbQueue.size(), TimeUnit.MILLISECONDS);
